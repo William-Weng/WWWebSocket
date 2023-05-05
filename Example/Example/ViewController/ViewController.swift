@@ -22,32 +22,37 @@ final class ViewController: UIViewController {
     }
 }
 
+// MARK: - WWWebSocketDelegate
+extension ViewController: WWWebSocketDelegate {
+    
+    func didOpenWithProtocol(_ protocol: String?) {
+        wwPrint("connected => \(String(describing: `protocol`))")
+    }
+    
+    func didCloseWith(_ closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
+        wwPrint("disconnected => \(closeCode), \(String(describing: reason))")
+    }
+    
+    func receiveMessageResult(_ result: Result<URLSessionWebSocketTask.Message, Error>) {
+        
+        switch result {
+        case .failure(let error): wwPrint(error)
+        case .success(let message):
+            switch message {
+            case .string(let string): self.resultLabel.text = string
+            case .data(let data): wwPrint(data)
+            @unknown default: break
+            }
+        }
+    }
+}
+
 // MARK: - 小工具
 private extension ViewController {
     
     /// [WebSocket連線](https://www.piesocket.com/websocket-tester)
     /// - Parameter url: String
     func connect(with url: String) {
-        
-        WWWebSocket.shared.connent(with: url) { value in
-            wwPrint("connected => \(String(describing: value))")
-        } didCloseWithCode: { code, data in
-            wwPrint("disconnected => \(code), \(String(describing: data))")
-        } receiveResult: { result in
-            switch result {
-            case .failure(let error): wwPrint(error)
-            case .success(let message):
-                
-                switch message {
-                case .string(let string):
-                    self.resultLabel.text = string
-                    wwPrint(string)
-                case .data(let data):
-                    wwPrint(data)
-                @unknown default:
-                    break
-                }
-            }
-        }
+        WWWebSocket.shared.connent(with: url, delegate: self)
     }
 }
