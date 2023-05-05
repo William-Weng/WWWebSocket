@@ -53,6 +53,8 @@ public extension WWWebSocket {
     ///   - queue: OperationQueue?
     func connent(with socketUrl: String, delegate: WWWebSocketDelegate?, configuration: URLSessionConfiguration = .default, delegateQueue queue: OperationQueue? = .main) {
         
+        self.delegate = delegate
+        
         guard let url = URL(string: socketUrl) else { delegate?.receiveMessageResult(.failure(Constant.MyError.notUrlFormat)); return }
         
         let urlSession = URLSession(configuration: configuration, delegate: self, delegateQueue: queue)
