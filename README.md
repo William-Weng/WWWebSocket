@@ -11,7 +11,7 @@
 ### [Installation with Swift Package Manager](https://medium.com/彼得潘的-swift-ios-app-開發問題解答集/使用-spm-安裝第三方套件-xcode-11-新功能-2c4ffcf85b4b)
 ```bash
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWWebSocket.git", .upToNextMajor(from: "1.1.1"))
+    .package(url: "https://github.com/William-Weng/WWWebSocket.git", .upToNextMajor(from: "1.1.3"))
 ]
 ```
 
@@ -21,6 +21,13 @@ dependencies: [
 |connent(with:delegate:configuration:delegateQueue:)|WebSocket連線 => 接收訊息|
 |sendMessage(_:result:)|傳送訊息|
 |cancel(with:reason:)|關閉連線|
+
+### WWWebSocketDelegate
+|函式|功能|
+|-|-|
+|didOpenWithProtocol(_:)|開啟連線|
+|didCloseWith(_:reason:)|關閉連線|
+|receiveMessageResult(_:)|取得連線數據|
 
 ### Example
 ```swift
